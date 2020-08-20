@@ -3,8 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { Row, Col } from "react-grid-system";
+import { Row } from "react-grid-system";
 import firebase from "../../firebase.js";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   rootentry: {
@@ -12,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: "60%",
     },
-    button: {      
-      float: "right"
+    button: {
+      float: "right",
     },
   },
   root: {
@@ -40,22 +41,36 @@ const SendNotifs = () => {
 
   const classes = useStyles();
 
-  function onSubmit(e) {
-    e.preventDefault();
+  // function renderAlertSuccess() {
+  // <Alert variant="outlined" severity="success">
+  // This is a success alert — check it out!
+  // </Alert>;
+  // }
+  const renderAlertError = (
+    <Alert variant="outlined" severity="error">
+      This is an error alert — check it out!
+    </Alert>
+  );
 
-    firebase
-      .firestore()
-      .collection("Notifcations")
-      .add({
-        title,
-        content,
-        date,
-      })
-      .then(() => {
-        settitle("");
-        setcontent("");
-        setdate("");
-      });
+  function onSubmit(e) {
+    if (title !== "" && content !== "" && date !== "") {
+      e.preventDefault();
+
+      firebase
+        .firestore()
+        .collection("Notifcations")
+        .add({
+          title,
+          content,
+          date,
+        })
+        .then(() => {
+          settitle("");
+          setcontent("");
+          setdate("");
+        });
+    } else {
+    }
   }
 
   return (
@@ -64,7 +79,7 @@ const SendNotifs = () => {
         className={classes.rootentry}
         noValidate
         autoComplete="off"
-        onSubmit={onSubmit}
+        onSubmit={ onSubmit }
       >
         <div>
           <Row>
@@ -93,7 +108,7 @@ const SendNotifs = () => {
               onChange={(e) => setcontent(e.currentTarget.value)}
             />
           </Row>
-          <Row>          
+          <Row>
             <TextField
               id="date"
               label="Date"
@@ -106,12 +121,12 @@ const SendNotifs = () => {
                 shrink: true,
               }}
             />
-            </Row>
-            <Row>
+          </Row>
+          <Row>
             <button className={classes.button}>
               <Button
                 variant="contained"
-                color="primary"                
+                color="primary"
                 endIcon={<SendIcon />}
               >
                 Send
