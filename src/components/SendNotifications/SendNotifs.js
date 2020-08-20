@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -7,10 +7,10 @@ import { Row, Col } from "react-grid-system";
 import firebase from "../../firebase.js";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import Checkbox from "@material-ui/core/Checkbox";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 
 const useStyles = makeStyles((theme) => ({
   rootentry: {
@@ -43,24 +43,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SendNotifs = () => {
-  const [state, setState] = useState({}); 
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-
-  const { High, Medium, Low } = state;
-  const error = [High, Medium, Low].filter((v) => v).length !== 1;
+  const classes = useStyles();
 
   const [date, setdate] = useState("");
   const [title, settitle] = useState("");
   const [content, setcontent] = useState("");
-
-  const classes = useStyles();
-
+  const [value, setValue] = React.useState("");
 
   function onSubmit(e) {
-    if (title !== "" && content !== "" && date !== "") {
+    if (title !== "" && content !== "" && date !== "" && value !== "") {
       e.preventDefault();
 
       firebase
@@ -70,13 +61,13 @@ const SendNotifs = () => {
           title,
           content,
           date,
-          state,
+          value,
         })
         .then(() => {
           settitle("");
           setcontent("");
           setdate("");
-          setState("");
+          setValue("");
         });
     } else {
     }
@@ -119,65 +110,51 @@ const SendNotifs = () => {
           </Row>
           <Row>
             <Col xs={4} sm={4} md={4} lg={4} xl={4}>
-            <TextField
-              id="date"
-              label="Date"
-              type="date"
-              defaultValue="2020-09-24"
-              className={classes.textField}
-              value={date}
-              onChange={(e) => setdate(e.currentTarget.value)}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Col>
-          <Col>
-            <FormControl
-              required
-              error={error}
-              component="fieldset"
-              className={classes.formControl}
-             
-            >
-              <FormLabel component="legend">Pick One</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={High}
-                      value={state}
-                      onChange={(e) => setState(e.currentTarget.value)}
-                      name="High"
-                    />
-                  }
-                  label="High"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Medium}
-                      value={state}
-                      onChange={(e) => setState(e.currentTarget.value)}
-                      name="Medium"
-                    />
-                  }
-                  label="Medium"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={Low}
-                      value={state}
-                      onChange={(e) => setState(e.currentTarget.value)}
-                      name="Low"
-                    />
-                  }
-                  label="Low"
-                />
-              </FormGroup>
-              <FormHelperText>Only One Type of Priority</FormHelperText>
-            </FormControl>
+              <TextField
+                id="date"
+                label="Date"
+                type="date"
+                required
+                defaultValue="2020-09-24"
+                className={classes.textField}
+                value={date}
+                onChange={(e) => setdate(e.currentTarget.value)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Col>
+            <Col>
+              <FormControl
+                required
+                component="fieldset"
+                className={classes.formControl}
+              >
+                <FormLabel component="legend">Priority</FormLabel>
+                <RadioGroup
+                  aria-label="gender"
+                  name="Priority"
+                  value={value}
+                  onChange={(e) => setValue(e.currentTarget.value)}
+                >
+                  <FormControlLabel
+                    value="High"
+                    control={<Radio />}
+                    label="High"
+                  />
+                  <FormControlLabel
+                    value="Medium"
+                    control={<Radio />}
+                    label="Medium"
+                  />
+                  <FormControlLabel
+                    value="Low"
+                    control={<Radio />}
+                    label="Low"
+                  />
+                </RadioGroup>
+                <FormHelperText>Only One Type of Priority</FormHelperText>
+              </FormControl>
             </Col>
           </Row>
           <Row>

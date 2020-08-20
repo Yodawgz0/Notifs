@@ -45,7 +45,7 @@ const ModifyNotifs = () => {
               <Col className="title">{notif.title}</Col>
               <Col className="content">{notif.content}</Col>
               <Col className="date"> {notif.date}</Col>
-              <Col className="priority">{notif.priority}</Col>
+              <Col className="priority">{notif.value}</Col>
               <Col>
                 <div className="Cross">
                   <Button
