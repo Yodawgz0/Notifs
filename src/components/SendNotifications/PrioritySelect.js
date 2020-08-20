@@ -29,29 +29,10 @@ export default function PrioritySelect() {
   };
 
   const { High, Medium, Low } = state;
-  const { gilad, jason, antoine } = state;
   const error = [High, Medium, Low].filter((v) => v).length !== 1;
 
   return (
     <div className={classes.root}>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Contact Person</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox checked={gilad} onChange={handleChange} name="gilad" />}
-            label="Gilad Gray"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-            label="Jason Killian"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-            label="Antoine Llorca"
-          />
-        </FormGroup>
-        <FormHelperText>Select Faculty Assigned</FormHelperText>
-      </FormControl>
       <FormControl required error={error} component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">Pick One</FormLabel>
         <FormGroup>

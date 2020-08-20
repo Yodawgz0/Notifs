@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import { Row } from "react-grid-system";
+import { Row, Col } from "react-grid-system";
 import firebase from "../../firebase.js";
-import Alert from "@material-ui/lab/Alert";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles((theme) => ({
   rootentry: {
@@ -15,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
       float: "right",
+    },
+    formControl: {
+      margin: theme.spacing(3),
     },
   },
   root: {
@@ -35,22 +43,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SendNotifs = () => {
+  const [state, setState] = useState({}); 
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+  const { High, Medium, Low } = state;
+  const error = [High, Medium, Low].filter((v) => v).length !== 1;
+
   const [date, setdate] = useState("");
   const [title, settitle] = useState("");
   const [content, setcontent] = useState("");
 
   const classes = useStyles();
 
-  // function renderAlertSuccess() {
-  // <Alert variant="outlined" severity="success">
-  // This is a success alert — check it out!
-  // </Alert>;
-  // }
-  const renderAlertError = (
-    <Alert variant="outlined" severity="error">
-      This is an error alert — check it out!
-    </Alert>
-  );
 
   function onSubmit(e) {
     if (title !== "" && content !== "" && date !== "") {
@@ -63,11 +70,13 @@ const SendNotifs = () => {
           title,
           content,
           date,
+          state,
         })
         .then(() => {
           settitle("");
           setcontent("");
           setdate("");
+          setState("");
         });
     } else {
     }
@@ -79,7 +88,7 @@ const SendNotifs = () => {
         className={classes.rootentry}
         noValidate
         autoComplete="off"
-        onSubmit={ onSubmit }
+        onSubmit={onSubmit}
       >
         <div>
           <Row>
@@ -109,6 +118,7 @@ const SendNotifs = () => {
             />
           </Row>
           <Row>
+            <Col xs={4} sm={4} md={4} lg={4} xl={4}>
             <TextField
               id="date"
               label="Date"
@@ -121,6 +131,54 @@ const SendNotifs = () => {
                 shrink: true,
               }}
             />
+          </Col>
+          <Col>
+            <FormControl
+              required
+              error={error}
+              component="fieldset"
+              className={classes.formControl}
+             
+            >
+              <FormLabel component="legend">Pick One</FormLabel>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={High}
+                      value={state}
+                      onChange={(e) => setState(e.currentTarget.value)}
+                      name="High"
+                    />
+                  }
+                  label="High"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={Medium}
+                      value={state}
+                      onChange={(e) => setState(e.currentTarget.value)}
+                      name="Medium"
+                    />
+                  }
+                  label="Medium"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={Low}
+                      value={state}
+                      onChange={(e) => setState(e.currentTarget.value)}
+                      name="Low"
+                    />
+                  }
+                  label="Low"
+                />
+              </FormGroup>
+              <FormHelperText>Only One Type of Priority</FormHelperText>
+            </FormControl>
+            </Col>
           </Row>
           <Row>
             <button className={classes.button}>
