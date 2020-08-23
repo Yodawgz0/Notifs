@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 function useNotifs() {
   const [Notifcations, setNotifcations] = useState([]);
 
+
   useEffect(() => {
     firebase
       .firestore()
@@ -46,6 +47,7 @@ const ModifyNotifs = () => {
               <Col className="content">{notif.content}</Col>
               <Col className="date"> {notif.date}</Col>
               <Col className="priority">{notif.value}</Col>
+              <Col className="link">{notif.url}</Col>
               <Col>
                 <div className="Cross">
                   <Button

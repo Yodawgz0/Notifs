@@ -11,6 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import { storage } from "../../firebase.js";
 
 const useStyles = makeStyles((theme) => ({
   rootentry: {
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     maxWidth: 200,
   },
+  hidden: {
+    display: "none",
+  },
 }));
 
 const SendNotifs = () => {
@@ -49,8 +53,18 @@ const SendNotifs = () => {
   const [title, settitle] = useState("");
   const [content, setcontent] = useState("");
   const [value, setValue] = React.useState("");
+  const [url, setUrl] = React.useState("");
+
+  const handleChange = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = storage.ref();
+    const fileRef = storageRef.child(file.name);
+    await fileRef.put(file);
+    setUrl(await fileRef.getDownloadURL());
+  };
 
   function onSubmit(e) {
+    
     if (title !== "" && content !== "" && date !== "" && value !== "") {
       e.preventDefault();
 
@@ -62,6 +76,7 @@ const SendNotifs = () => {
           content,
           date,
           value,
+          url,
         })
         .then(() => {
           settitle("");
@@ -157,12 +172,24 @@ const SendNotifs = () => {
               </FormControl>
             </Col>
           </Row>
+          <Row style={{ paddingTop: "3ch" }}>
+            <Col xs={3} sm={3} md={3} lg={1} xl={1}>
+              <input
+                accept="file/*"
+                className={classes.input}
+                id="contained-button-file"
+                type="file"
+                onChange={handleChange}
+              />
+            </Col>  
+          </Row>
           <Row>
-            <button className={classes.button}>
+            <button disabled={!url} className={classes.button}>
               <Button
                 variant="contained"
                 color="primary"
                 endIcon={<SendIcon />}
+                disabled={!url}
               >
                 Send
               </Button>
