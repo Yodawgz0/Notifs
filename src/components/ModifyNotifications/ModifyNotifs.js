@@ -31,15 +31,6 @@ const ModifyNotifs = () => {
     <div>
       <h2>List of Notifications</h2>
       <div>
-        <label>Sort by:</label>{" "}
-        <select>
-          <option>Time</option>
-          <option>title (a-z)</option>
-          <option>title (z-a)</option>
-          <option>priority</option>
-        </select>
-      </div>
-      <div>
         {notifs.map((notif) => (
           <div>
             <Row key={notif.id} style={{ padding: "0.5rem" }}>

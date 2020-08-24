@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
@@ -12,39 +11,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { storage } from "../../firebase.js";
-
-const useStyles = makeStyles((theme) => ({
-  rootentry: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "60%",
-    },
-    button: {
-      float: "right",
-    },
-    formControl: {
-      margin: theme.spacing(3),
-    },
-  },
-  root: {
-    display: "flex",
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    maxWidth: 200,
-  },
-  hidden: {
-    display: "none",
-  },
-}));
+import { useStyles } from "./SendNotifsStyle.js";
 
 const SendNotifs = () => {
   const classes = useStyles();
@@ -54,6 +21,7 @@ const SendNotifs = () => {
   const [content, setcontent] = useState("");
   const [value, setValue] = React.useState("");
   const [url, setUrl] = React.useState("");
+  const [enablefile, setenablefile] = React.useState("");
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
@@ -64,7 +32,6 @@ const SendNotifs = () => {
   };
 
   function onSubmit(e) {
-    
     if (title !== "" && content !== "" && date !== "" && value !== "") {
       e.preventDefault();
 
@@ -124,7 +91,7 @@ const SendNotifs = () => {
             />
           </Row>
           <Row>
-            <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+            <Col xs={6} sm={6} md={4} lg={4} xl={4}>
               <TextField
                 id="date"
                 label="Date"
@@ -147,7 +114,7 @@ const SendNotifs = () => {
               >
                 <FormLabel component="legend">Priority</FormLabel>
                 <RadioGroup
-                  aria-label="gender"
+                  aria-label="Priority"
                   name="Priority"
                   value={value}
                   onChange={(e) => setValue(e.currentTarget.value)}
@@ -173,27 +140,56 @@ const SendNotifs = () => {
             </Col>
           </Row>
           <Row style={{ paddingTop: "3ch" }}>
+            <Col xs={3} sm={3} md={3} lg={2} xl={2}>
+              <input
+                type="checkbox"
+                disabled={url}
+                onChange={(e) => setenablefile(e.currentTarget.checked)}
+              />
+              Enable File Attachment
+            </Col>
             <Col xs={3} sm={3} md={3} lg={1} xl={1}>
               <input
-                accept="file/*"
+                accept="image/*, application/pdf"
                 className={classes.input}
                 id="contained-button-file"
                 type="file"
+                disabled={!enablefile}
                 onChange={handleChange}
               />
-            </Col>  
-          </Row>
-          <Row>
-            <button disabled={!url} className={classes.button}>
               <Button
-                variant="contained"
-                color="primary"
-                endIcon={<SendIcon />}
-                disabled={!url}
+                variant="outlined" size="small" color="secondary"
+                disabled={!enablefile}
+                onClick={(e) => setUrl("")}
               >
-                Send
+                Delete
               </Button>
-            </button>
+            </Col>
+          </Row>
+          <Row style={{ paddingTop: "4ch" }}>
+            <div className={classes.sendButton}>
+              <button
+                disabled={
+                  (!url && enablefile) || !title || !date || !content || !value
+                }
+                className={classes.button}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<SendIcon />}
+                  disabled={
+                    (!url && enablefile) ||
+                    !title ||
+                    !date ||
+                    !content ||
+                    !value
+                  }
+                >
+                  Send
+                </Button>
+              </button>
+            </div>
           </Row>
         </div>
       </form>
