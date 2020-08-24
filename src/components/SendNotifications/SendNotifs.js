@@ -23,8 +23,6 @@ const SendNotifs = () => {
   const [value, setValue] = React.useState("");
   const [url, setUrl] = React.useState("");
   const [enablefile, setenablefile] = React.useState("");
-  let FileRef;
-
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
@@ -34,8 +32,7 @@ const SendNotifs = () => {
     //Upload files in firebase storage.
     await fileRef.put(file);
     setUrl(await fileRef.getDownloadURL());
-    FileRef = storage.refFromURL(url);
-    
+    storage.refFromURL(url);    
   };
 
   function onSubmit(e) {
@@ -58,8 +55,7 @@ const SendNotifs = () => {
           setdate("");
           setValue("");
         });
-    } else {
-    }
+    } else { }
    }
 
   return (
@@ -186,8 +182,7 @@ const SendNotifs = () => {
            
          
           <Col style={{ paddingTop: "4ch" }} xs={12} sm={12} lg={8}>
-            <div className={classes.sendButton}>
-            
+          <div className={classes.sendButton}>            
               <button
                 disabled={
                   (!url && enablefile) || !title || !date || !content || !value
@@ -208,11 +203,9 @@ const SendNotifs = () => {
                 >
                   Send
                 </Button>
-              </button>
-              
+              </button>              
             </div>
-            </Col>
-          
+            </Col>          
            </Row>
         </div>
       </form>
