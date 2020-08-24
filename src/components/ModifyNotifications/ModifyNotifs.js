@@ -4,7 +4,6 @@ import firebase from "../../firebase.js";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
-import Link from "@material-ui/core/Link";
 import { storage } from "../../firebase.js";
 import { useStyles } from "./ModifyNotifsStyle.js";
 
@@ -45,7 +44,7 @@ const ModifyNotifs = () => {
               <Col xs={5} sm={5} md={3} lg={3} xl={3} className="date"> {notif.date}</Col>
               <Col xs={2} sm={2} md={3} lg={3} xl={3} className="priority">{notif.value}</Col>
               <Col xs={12} sm={12} md={3} lg={3} xl={3} className="Link" >
-                <Link href={notif.url}  onClick={(notif.url)? "":(e)=> e.preventDefault()}>View File</Link>
+                <Button  href={notif.url} color="primary"  onClick={(notif.url)? "":(e)=> e.preventDefault()}>View File</Button >
               </Col>
               <Col xs={1} sm={2} md={2} lg={2} xl={2}>
                 <div className="Delete">

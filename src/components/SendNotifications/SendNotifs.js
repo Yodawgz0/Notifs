@@ -13,6 +13,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Card from '@material-ui/core/Card';
 import { storage } from "../../firebase.js";
 import { useStyles } from "./SendNotifsStyle.js";
+import { Typography } from "@material-ui/core";
 
 const SendNotifs = () => {
   const classes = useStyles();
@@ -164,11 +165,12 @@ const SendNotifs = () => {
                 disabled={!enablefile}
                 onChange={handleChange}
               />
+              <Typography variant="caption"  disbaled={!url}>Uploading File...</Typography>
               </Col>
               <Col xs={12} sm={12} md={3} lg={4} xl={5}>
               <Button
                 variant="outlined" size="small" color="secondary"
-                disabled={!enablefile}
+                disabled={!enablefile || !url}
                 onClick={(e) => {
                   e.stopPropagation();
                     storage.refFromURL( url).delete();
@@ -176,6 +178,7 @@ const SendNotifs = () => {
               >
                 Delete
               </Button>
+              
             </Col>
             </Row>
             </Card>
