@@ -33,12 +33,22 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
     cardDisplay:{
-      width: "60%",
+      width: "70%",
       margin: theme.spacing(3),
     },
     sendButton:{
       marginLeft: "30%"
-    }
+    },
+
+    checkbox:{
+      padding: "20%",
+    },
+    [theme.breakpoints.down('md')]: {
+      input : {
+        marginTop: "10%",
+        marginBottom: "10%"
+      },
+    },
   }));
 
   export {useStyles}

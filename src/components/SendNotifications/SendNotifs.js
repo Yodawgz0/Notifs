@@ -25,10 +25,13 @@ const SendNotifs = () => {
   const [enablefile, setenablefile] = React.useState("");
   let FileRef;
 
+
   const handleChange = async (e) => {
     const file = e.target.files[0];
+    //Path of the file.
     const storageRef = storage.ref();
     const fileRef = storageRef.child(file.name);
+    //Upload files in firebase storage.
     await fileRef.put(file);
     setUrl(await fileRef.getDownloadURL());
     FileRef = storage.refFromURL(url);
@@ -38,7 +41,7 @@ const SendNotifs = () => {
   function onSubmit(e) {
     if (title !== "" && content !== "" && date !== "" && value !== "") {
       e.preventDefault();
-
+//adding values in firebase database.
       firebase
         .firestore()
         .collection("Notifcations")
@@ -57,18 +60,18 @@ const SendNotifs = () => {
         });
     } else {
     }
-  }
+   }
 
   return (
     <div>
-      <form
+     <form
         className={classes.rootentry}
         noValidate
         autoComplete="off"
         onSubmit={onSubmit}
       >
         <div>
-          <Row>
+          <Row xs={12} sm={12} md={3} lg={4} xl={5}>
             <TextField
               id="outlined-multiline-static"
               label=" Title"
@@ -81,7 +84,7 @@ const SendNotifs = () => {
               onChange={(e) => settitle(e.currentTarget.value)}
             />
           </Row>
-          <Row>
+          <Row  >
             <TextField
               id="outlined-multiline-static"
               label="Content"
@@ -143,18 +146,20 @@ const SendNotifs = () => {
               </FormControl>
             </Col>
           </Row>
-          <Row style={{ paddingTop: "3ch" }}>
+          <Row style={{ paddingTop: "3ch", alignItems:"flex-start" }}>
           <Card className={classes.cardDisplay} variant="outlined">
             <Row style={{padding:"3ch"}}>
-            <Col xs={3} sm={3} md={3} lg={2} xl={2}>
+            <Col xs={12} sm={12} md={3} lg={2} xl={2}>
               <input
                 type="checkbox"
                 disabled={url}
+                className={classes.checkbox}
                 onChange={(e) => setenablefile(e.currentTarget.checked)}
               />
                File Attach
             </Col>
-            <Col xs={3} sm={3} md={3} lg={4} xl={5}>
+
+            <Col xs={12} sm={12} md={3} lg={4} xl={5}>
               <input
                 accept="image/*, application/pdf"
                 className={classes.input}
@@ -163,23 +168,27 @@ const SendNotifs = () => {
                 disabled={!enablefile}
                 onChange={handleChange}
               />
+              </Col>
+              <Col xs={12} sm={12} md={3} lg={4} xl={5}>
               <Button
                 variant="outlined" size="small" color="secondary"
                 disabled={!enablefile}
                 onClick={(e) => {
                   e.stopPropagation();
-                  FileRef
-                    .delete();setUrl("");}}
+                  storage.refFromURL({url}).delete();
+                  setUrl("");}}
+                  
               >
                 Delete
               </Button>
             </Col>
             </Row>
             </Card>
-            </Row>
+           
          
-          <Row style={{ paddingTop: "4ch" }}>
+          <Col style={{ paddingTop: "4ch" }} xs={12} sm={12} lg={8}>
             <div className={classes.sendButton}>
+            
               <button
                 disabled={
                   (!url && enablefile) || !title || !date || !content || !value
@@ -201,8 +210,11 @@ const SendNotifs = () => {
                   Send
                 </Button>
               </button>
+              
             </div>
-          </Row>
+            </Col>
+          
+           </Row>
         </div>
       </form>
     </div>

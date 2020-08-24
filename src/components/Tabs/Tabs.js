@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -59,6 +59,17 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  tabs: {
+    backgroundColor: '#80FFD4',
+    color:'#151A00',
+    fontWeight: 'bold',
+  },
+  [theme.breakpoints.down('md')]: {
+     linktabs:{
+        fontSize:"10px",
+    },
+  }
+   
 }));
 
 export default function NavTabs() {
@@ -71,16 +82,17 @@ export default function NavTabs() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" >
         <Tabs
+          className={classes.tabs}
           variant="fullWidth"
           value={value}
           onChange={handleChange}
           aria-label="nav tabs example"
         >
-          <LinkTab label="Send Notifications" href="/Send" {...a11yProps(0)} />
-          <LinkTab label="Modify Notifications" href="/Modify" {...a11yProps(1)} />
-          <LinkTab label="Form Logs" href="/Form" {...a11yProps(2)} />
+          <LinkTab  className={classes.linktabs} label="Send Notifications" href="/Send" {...a11yProps(0)} />
+          <LinkTab className={classes.linktabs} label="Modify Notifications" href="/Modify" {...a11yProps(1)} />
+          <LinkTab className={classes.linktabs} label="Form Logs" href="/Form" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
