@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import Card from '@material-ui/core/Card';
 import { storage } from "../../firebase.js";
 import { useStyles } from "./SendNotifsStyle.js";
 
@@ -22,6 +23,7 @@ const SendNotifs = () => {
   const [value, setValue] = React.useState("");
   const [url, setUrl] = React.useState("");
   const [enablefile, setenablefile] = React.useState("");
+  let FileRef;
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
@@ -29,6 +31,8 @@ const SendNotifs = () => {
     const fileRef = storageRef.child(file.name);
     await fileRef.put(file);
     setUrl(await fileRef.getDownloadURL());
+    FileRef = storage.refFromURL(url);
+    
   };
 
   function onSubmit(e) {
@@ -140,15 +144,17 @@ const SendNotifs = () => {
             </Col>
           </Row>
           <Row style={{ paddingTop: "3ch" }}>
+          <Card className={classes.cardDisplay} variant="outlined">
+            <Row style={{padding:"3ch"}}>
             <Col xs={3} sm={3} md={3} lg={2} xl={2}>
               <input
                 type="checkbox"
                 disabled={url}
                 onChange={(e) => setenablefile(e.currentTarget.checked)}
               />
-              Enable File Attachment
+               File Attach
             </Col>
-            <Col xs={3} sm={3} md={3} lg={1} xl={1}>
+            <Col xs={3} sm={3} md={3} lg={4} xl={5}>
               <input
                 accept="image/*, application/pdf"
                 className={classes.input}
@@ -160,12 +166,18 @@ const SendNotifs = () => {
               <Button
                 variant="outlined" size="small" color="secondary"
                 disabled={!enablefile}
-                onClick={(e) => setUrl("")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  FileRef
+                    .delete();setUrl("");}}
               >
                 Delete
               </Button>
             </Col>
-          </Row>
+            </Row>
+            </Card>
+            </Row>
+         
           <Row style={{ paddingTop: "4ch" }}>
             <div className={classes.sendButton}>
               <button

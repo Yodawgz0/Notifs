@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
     hidden: {
       display: "none",
     },
+    cardDisplay:{
+      width: "60%",
+      margin: theme.spacing(3),
+    },
     sendButton:{
       marginLeft: "30%"
     }
