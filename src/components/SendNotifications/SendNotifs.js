@@ -98,7 +98,7 @@ const SendNotifs = () => {
             />
           </Row>
           <Row>
-            <Col xs={6} sm={6} md={4} lg={4} xl={4}>
+            <Col xs={12} sm={12} md={4} lg={4} xl={4}>
               <TextField
                 id="date"
                 label="Date"
@@ -175,9 +175,8 @@ const SendNotifs = () => {
                 disabled={!enablefile}
                 onClick={(e) => {
                   e.stopPropagation();
-                  storage.refFromURL({url}).delete();
-                  setUrl("");}}
-                  
+                    storage.refFromURL( url).delete();
+                      setUrl("");}}                  
               >
                 Delete
               </Button>
