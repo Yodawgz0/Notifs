@@ -1,4 +1,4 @@
-  import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import SendNotifs from '../SendNotifications/SendNotifs.js'
 import ModifyNotifs from '../ModifyNotifications/ModifyNotifs.js';
+import BannerImageUpload from '../BannerImageUpload/BannerImageUpload.js';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   tabs: {
-    backgroundColor: '#80FFD4',
+    backgroundColor: '#6fd7e3',
     color:'#151A00',
     fontWeight: 'bold',
   },
@@ -92,7 +93,9 @@ export default function NavTabs() {
         >
           <LinkTab  className={classes.linktabs} label="Send Notifications" href="/Send" {...a11yProps(0)} />
           <LinkTab className={classes.linktabs} label="Modify Notifications" href="/Modify" {...a11yProps(1)} />
-          <LinkTab className={classes.linktabs} label="Form Logs" href="/Form" {...a11yProps(2)} />
+          <LinkTab className={classes.linktabs} label="Banner Image Upload" href="/Banner" {...a11yProps(2)} />
+          <LinkTab className={classes.linktabs} label="Form Logs" href="/Form" {...a11yProps(3)} />
+
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -102,6 +105,9 @@ export default function NavTabs() {
         <ModifyNotifs/>
       </TabPanel>
       <TabPanel value={value} index={2}>
+        <BannerImageUpload/>
+      </TabPanel>
+      <TabPanel value={value} index={3}>
         Page Three
       </TabPanel>
     </div>
