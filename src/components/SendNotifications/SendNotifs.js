@@ -10,10 +10,27 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import Card from '@material-ui/core/Card';
+import Card from "@material-ui/core/Card";
 import { storage } from "../../firebase.js";
 import { useStyles } from "./SendNotifsStyle.js";
-import { Typography } from "@material-ui/core";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const SendNotifs = () => {
   const classes = useStyles();
@@ -24,22 +41,47 @@ const SendNotifs = () => {
   const [value, setValue] = React.useState("");
   const [url, setUrl] = React.useState("");
   const [enablefile, setenablefile] = React.useState("");
+  const [progress, setprogress] = React.useState("");
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
     //Path of the file.
-    const storageRef = storage.ref();
+    const storageRef = storage.ref("files/");
     const fileRef = storageRef.child(file.name);
     //Upload files in firebase storage.
-    await fileRef.put(file);
-    setUrl(await fileRef.getDownloadURL());
-    storage.refFromURL(url);    
+    let upload = fileRef.put(file);
+
+    //update progress bar
+    upload.on(
+      "state_changed",
+      function progress(snapshot) {
+        let percentage =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setprogress(percentage);
+      },
+
+      function error() {
+        alert("error uploading file");
+      },
+
+      function complete() {
+        // generate URL
+        fileRef
+          .getDownloadURL()
+          .then(function (url) {
+            setUrl(url);
+          })
+          .catch(function (error) {
+            console.log("error encountered");
+          });
+      }
+    );
   };
 
   function onSubmit(e) {
     if (title !== "" && content !== "" && date !== "" && value !== "") {
       e.preventDefault();
-//adding values in firebase database.
+      //adding values in firebase database.
       firebase
         .firestore()
         .collection("Notifcations")
@@ -56,12 +98,13 @@ const SendNotifs = () => {
           setdate("");
           setValue("");
         });
-    } else { }
-   }
+    } else {
+    }
+  }
 
   return (
     <div>
-     <form
+      <form
         className={classes.rootentry}
         noValidate
         autoComplete="off"
@@ -81,7 +124,7 @@ const SendNotifs = () => {
               onChange={(e) => settitle(e.currentTarget.value)}
             />
           </Row>
-          <Row  >
+          <Row>
             <TextField
               id="outlined-multiline-static"
               label="Content"
@@ -143,59 +186,54 @@ const SendNotifs = () => {
               </FormControl>
             </Col>
           </Row>
-          <Row style={{ paddingTop: "3ch", alignItems:"flex-start" }}>
-          <Card className={classes.cardDisplay} variant="outlined">
-            <Row style={{padding:"3ch"}}>
-            <Col xs={12} sm={12} md={3} lg={2} xl={2}>
-              <input
-                type="checkbox"
-                disabled={url}
-                className={classes.checkbox}
-                onChange={(e) => setenablefile(e.currentTarget.checked)}
-              />
-               File Attach
-            </Col>
+          <Row style={{ paddingTop: "3ch", alignItems: "flex-start" }}>
+            <Card className={classes.cardDisplay} variant="outlined">
+              <Row style={{ padding: "3ch" }}>
+                <Col xs={12} sm={12} md={3} lg={2} xl={2}>
+                  <input
+                    type="checkbox"
+                    disabled={url}
+                    className={classes.checkbox}
+                    onChange={(e) => setenablefile(e.currentTarget.checked)}
+                  />
+                  File Attach
+                </Col>
 
-            <Col xs={12} sm={12} md={3} lg={4} xl={5}>
-              <input
-                accept="image/*, application/pdf"
-                className={classes.input}
-                id="contained-button-file"
-                type="file"
-                disabled={!enablefile}
-                onChange={handleChange}
-              />
-              <Typography variant="caption"  disbaled={!url}>Uploading File...</Typography>
-              </Col>
-              <Col xs={12} sm={12} md={3} lg={4} xl={5}>
-              <Button
-                variant="outlined" size="small" color="secondary"
-                disabled={!enablefile || !url}
-                onClick={(e) => {
-                  e.stopPropagation();
-                    storage.refFromURL( url).delete();
-                      setUrl("");}}                  
-              >
-                Delete
-              </Button>
-              
-            </Col>
-            </Row>
+                <Col xs={12} sm={12} md={3} lg={4} xl={5}>
+                  <input
+                    accept="image/*, application/pdf"
+                    className={classes.input}
+                    id="contained-button-file"
+                    type="file"
+                    disabled={!enablefile || url}
+                    onChange={handleChange}
+                  />
+                  <Col>
+                    <LinearProgressWithLabel value={progress} />
+                  </Col>{" "}
+                </Col>
+                <Col xs={12} sm={12} md={3} lg={4} xl={5}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                    disabled={!enablefile || !url}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      storage.refFromURL(url).delete();
+                      setUrl("");
+                      setprogress(0);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Col>
+              </Row>
             </Card>
-           
-         
-          <Col style={{ paddingTop: "4ch" }} xs={12} sm={12} lg={8}>
-          <div className={classes.sendButton}>            
-              <button
-                disabled={
-                  (!url && enablefile) || !title || !date || !content || !value
-                }
-                className={classes.button}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  endIcon={<SendIcon />}
+
+            <Col style={{ paddingTop: "4ch" }} xs={12} sm={12} lg={8}>
+              <div className={classes.sendButton}>
+                <button
                   disabled={
                     (!url && enablefile) ||
                     !title ||
@@ -203,13 +241,26 @@ const SendNotifs = () => {
                     !content ||
                     !value
                   }
+                  className={classes.button}
                 >
-                  Send
-                </Button>
-              </button>              
-            </div>
-            </Col>          
-           </Row>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<SendIcon />}
+                    disabled={
+                      (!url && enablefile) ||
+                      !title ||
+                      !date ||
+                      !content ||
+                      !value
+                    }
+                  >
+                    Send
+                  </Button>
+                </button>
+              </div>
+            </Col>
+          </Row>
         </div>
       </form>
     </div>
