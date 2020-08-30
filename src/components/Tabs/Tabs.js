@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import SendNotifs from '../SendNotifications/SendNotifs.js'
-import ModifyNotifs from '../ModifyNotifications/ModifyNotifs.js';
-import BannerImageUpload from '../BannerImageUpload/BannerImageUpload.js';
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import SendNotifs from "../SendNotifications/SendNotifs.js";
+import ModifyNotifs from "../ModifyNotifications/ModifyNotifs.js";
+import BannerImageUpload from "../BannerImageUpload/BannerImageUpload.js";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,7 +39,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `nav-tab-${index}`,
-    'aria-controls': `nav-tabpanel-${index}`,
+    "aria-controls": `nav-tabpanel-${index}`,
   };
 }
 
@@ -58,19 +58,18 @@ function LinkTab(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "#e6e6ff",
   },
   tabs: {
-    backgroundColor: '#6fd7e3',
-    color:'#151A00',
-    fontWeight: 'bold',
+    backgroundColor: "#00004d",
+    color: "#ffffff",
+    fontWeight: "bold",
   },
-  [theme.breakpoints.down('md')]: {
-     linktabs:{
-        fontSize:"10px",
+  [theme.breakpoints.down("md")]: {
+    linktabs: {
+      fontSize: "10px",
     },
-  }
-   
+  },
 }));
 
 export default function NavTabs() {
@@ -83,7 +82,7 @@ export default function NavTabs() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" >
+      <AppBar position="static">
         <Tabs
           className={classes.tabs}
           variant="fullWidth"
@@ -91,21 +90,46 @@ export default function NavTabs() {
           onChange={handleChange}
           aria-label="nav tabs example"
         >
-          <LinkTab  className={classes.linktabs} label="Send Notifications" href="/Send" {...a11yProps(0)} />
-          <LinkTab className={classes.linktabs} label="Modify Notifications" href="/Modify" {...a11yProps(1)} />
-          <LinkTab className={classes.linktabs} label="Banner Image Upload" href="/Banner" {...a11yProps(2)} />
-          <LinkTab className={classes.linktabs} label="Form Logs" href="/Form" {...a11yProps(3)} />
-
+          <LinkTab
+            className={classes.linktabs}
+            label="Send Notifications"
+            href="/Send"
+            {...a11yProps(0)}
+          />
+          <LinkTab
+            className={classes.linktabs}
+            label="Modify Notifications"
+            href="/Modify"
+            {...a11yProps(1)}
+          />
+          <LinkTab
+            className={classes.linktabs}
+            label="Banner Image Upload"
+            href="/Banner"
+            {...a11yProps(2)}
+          />
+          <LinkTab
+            className={classes.linktabs}
+            label="Form Logs"
+            href="/Form"
+            {...a11yProps(3)}
+          />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <SendNotifs/>
+        <div style={{ display: value === 0 ? "block" : "none" }}>
+          <SendNotifs />
+        </div>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ModifyNotifs/>
+        <div style={{ display: value === 1 ? "block" : "none" }}>
+          <ModifyNotifs />
+        </div>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <BannerImageUpload/>
+        <div style={{ display: value === 2 ? "block" : "none" }}>
+          <BannerImageUpload />
+        </div>
       </TabPanel>
       <TabPanel value={value} index={3}>
         Page Three
