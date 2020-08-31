@@ -11,6 +11,7 @@ import Box from "@material-ui/core/Box";
 import SendIcon from "@material-ui/icons/Send";
 import DeleteIcon from "@material-ui/icons/Delete";
 import * as firebase from "firebase/app";
+import Carousel from "react-bootstrap/Carousel";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -86,6 +87,13 @@ const BannerImageUpload = () => {
       }
     );
   };
+
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
   function onSubmit(e) {
     if (url !== "") {
       e.preventDefault();
@@ -111,7 +119,7 @@ const BannerImageUpload = () => {
       >
         <Card className={classes.cardDisplay} variant="outlined">
           <Row style={{ padding: "3ch" }}>
-            <Col xs={12} sm={12} md={3} lg={4} xl={5}>
+            <Col xs={12} sm={6} md={3} lg={3} xl={3}>
               <input
                 accept="image/*"
                 className={classes.input}
@@ -122,10 +130,13 @@ const BannerImageUpload = () => {
                 onChange={handleChange}
               />
             </Col>
-            <Col>
-              <LinearProgressWithLabel value={progress} />
+            <Col xs={12} sm={12} md={3} lg={3} xl={3}>
+              <LinearProgressWithLabel
+                className={classes.progressBar}
+                value={progress}
+              />
             </Col>
-            <Col xs={12} sm={12} md={3} lg={4} xl={5}>
+            <Col xs={12} sm={12} md={1} lg={1} xl={1}>
               <Button
                 variant="outlined"
                 size="small"
@@ -141,20 +152,20 @@ const BannerImageUpload = () => {
                 Delete
               </Button>
             </Col>
-            <Col>
-            <button disabled={!url} className={classes.button}>
-              <Button
-                variant="contained"
-                color="primary"
-                endIcon={<SendIcon />}
-                disabled={!url}
-              >
-                Send
-              </Button>
-            </button>
-          </Col>
+            <Col xs={12} sm={12} md={2} lg={2} xl={2}>
+              <button disabled={!url} className={classes.button}>
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  endIcon={<SendIcon />}
+                  disabled={!url}
+                >
+                  Send
+                </Button>
+              </button>
+            </Col>
           </Row>
-          
         </Card>
       </form>
       <div>
@@ -180,7 +191,7 @@ const BannerImageUpload = () => {
                           variant="outlined"
                           color="secondary"
                           size="small"
-                          className ={classes.deletebutton}
+                          className={classes.deletebutton}
                           startIcon={<DeleteIcon />}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -202,6 +213,15 @@ const BannerImageUpload = () => {
             </div>
           </Col>
         </Card>
+        <div>
+          <Carousel activeIndex={index} onSelect={handleSelect}>
+            {images.map((image) => (
+              <Carousel.Item  key={image.id}>
+                <img style={{ height: "40ch" }}src={image.url} alt="BannerImages"/>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </div>
       </div>
     </div>
   );

@@ -65,9 +65,16 @@ const useStyles = makeStyles((theme) => ({
     color: "#ffffff",
     fontWeight: "bold",
   },
+  linktabs:{
+      
+    '&:hover': {
+      textDecoration: "none",
+    }
+  },
   [theme.breakpoints.down("md")]: {
     linktabs: {
       fontSize: "10px",
+      
     },
   },
 }));
@@ -117,19 +124,13 @@ export default function NavTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <div style={{ display: value === 0 ? "block" : "none" }}>
-          <SendNotifs />
-        </div>
+        <SendNotifs />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <div style={{ display: value === 1 ? "block" : "none" }}>
-          <ModifyNotifs />
-        </div>
+        <ModifyNotifs />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <div style={{ display: value === 2 ? "block" : "none" }}>
-          <BannerImageUpload />
-        </div>
+        <BannerImageUpload />
       </TabPanel>
       <TabPanel value={value} index={3}>
         Page Three
