@@ -136,12 +136,13 @@ const BannerImageUpload = () => {
                 value={progress}
               />
             </Col>
-            <Col xs={12} sm={12} md={1} lg={1} xl={1}>
+            <Col xs={6} sm={6} md={1} lg={1} xl={1}>
               <Button
                 variant="outlined"
                 size="small"
                 color="secondary"
                 disabled={!url}
+                className={classes.deletebutton}
                 onClick={(e) => {
                   e.stopPropagation();
                   storage.refFromURL(url).delete();
@@ -152,7 +153,7 @@ const BannerImageUpload = () => {
                 Delete
               </Button>
             </Col>
-            <Col xs={12} sm={12} md={2} lg={2} xl={2}>
+            <Col xs={6} sm={6} md={2} lg={2} xl={2}>
               <button disabled={!url} className={classes.button}>
                 <Button
                   className={classes.button}
@@ -172,26 +173,28 @@ const BannerImageUpload = () => {
         <Card>
           <h4 className={classes.heading}>Files listed in Carousel</h4>
           <Divider />
-          <Col xs={12} sm={12} md={3} lg={3} xl={3} className="Link">
+          <Col xs={12} sm={12} md={4} lg={4} xl={4}>
             <div>
               {images.map((image) => (
                 <div>
                   <Row key={image.id} style={{ padding: "0.2rem" }}>
+                  <Col xs={6} sm={6} md={6} lg={6} xl={6}>
                     <Button
                       href={image.url}
                       color="primary"
-                      className={classes.button}
+                      className={classes.ViewImagebutton}
                       onClick={image.url ? "" : (e) => e.preventDefault()}
                     >
                       View Image
                     </Button>
-                    <Col xs={1} sm={2} md={2} lg={2} xl={2}>
-                      <div className="Delete">
+                    </Col>
+                    <Col xs={6} sm={6} md={6} lg={6} xl={6}>
+                      <div className={classes.deleteButtonList}>
                         <Button
                           variant="outlined"
                           color="secondary"
                           size="small"
-                          className={classes.deletebutton}
+                          
                           startIcon={<DeleteIcon />}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -214,10 +217,11 @@ const BannerImageUpload = () => {
           </Col>
         </Card>
         <div>
-          <Carousel activeIndex={index} onSelect={handleSelect}>
+        <h4 className={classes.heading}>Preview of Carousel</h4>
+          <Carousel className={classes.carouselDisplay} activeIndex={index} onSelect={handleSelect}>
             {images.map((image) => (
               <Carousel.Item  key={image.id}>
-                <img style={{ height: "40ch" }}src={image.url} alt="BannerImages"/>
+                <img clasNam={classes.ImageCarousel} src={image.url} alt="BannerImages"/>
               </Carousel.Item>
             ))}
           </Carousel>
