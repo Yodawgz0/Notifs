@@ -18,11 +18,14 @@ const useStyles = makeStyles((theme) => ({
     progressBar:{
       margin: "10%",
     },
-    heading: { textAlign: "center", margin: "2%" },
+    heading: { 
+        textAlign: "center",
+        marginTop: "2%"
+      },
     carouselDisplay:{
-      margin: "10ch",
-      padding:"10ch"
-
+        marginLeft: "10ch",
+        marginRight: "10ch",
+        padding:"5ch",
     },
     deleteButtonList:{
       marginTop: "2ch",
@@ -57,12 +60,17 @@ const useStyles = makeStyles((theme) => ({
       deleteButtonList:{
         margin: "15%"
       },
+      heading: { 
+        textAlign: "center",
+        marginTop: "10%"
+      },
       carouselDisplay:{
-        margin: "10ch",
-        padding:"10ch",
+        marginTop: "5ch",
+        margin: "0ch",
+        padding:"0ch",
       },
       ImageCarousel:{
-        height:"20%",
+        height:"10%",
         width: "100%"
       },
       ViewImagebutton: {
