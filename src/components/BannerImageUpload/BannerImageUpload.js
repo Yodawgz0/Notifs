@@ -221,7 +221,7 @@ const BannerImageUpload = () => {
           <Carousel className={classes.carouselDisplay} activeIndex={index} onSelect={handleSelect}>
             {images.map((image) => (
               <Carousel.Item  key={image.id}>
-                <img clasNam={classes.ImageCarousel} src={image.url} alt="BannerImages"/>
+                <img clasName={classes.ImageCarousel} src={image.url} alt="BannerImages"/>
               </Carousel.Item>
             ))}
           </Carousel>

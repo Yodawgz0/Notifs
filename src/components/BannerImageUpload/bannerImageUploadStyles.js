@@ -13,15 +13,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "6ch",
       marginLeft:"50%"
     },
-    deletebutton: {
-    },
     progressBar:{
       margin: "10%",
     },
     heading: { 
         textAlign: "center",
         marginTop: "2%"
-      },
+    },
     carouselDisplay:{
         marginLeft: "10ch",
         marginRight: "10ch",
