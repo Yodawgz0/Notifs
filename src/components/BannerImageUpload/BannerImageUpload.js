@@ -124,7 +124,6 @@ const BannerImageUpload = () => {
                 accept="image/*"
                 className={classes.input}
                 id="contained-button-file"
-                multiple
                 type="file"
                 disabled={url}
                 onChange={handleChange}

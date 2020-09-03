@@ -21,16 +21,15 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "2%"
     },
     carouselDisplay:{
-        marginLeft: "10ch",
-        marginRight: "10ch",
-        padding:"5ch",
+        margin: "20%"
     },
     deleteButtonList:{
       marginTop: "2ch",
       marginLeft:"50%"
     },
     ImageCarousel:{
-      height:"40%"
+      height:"20%",
+      width: "100%"
     },
 
     [theme.breakpoints.up('md')]: {
